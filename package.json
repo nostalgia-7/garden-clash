@@ -1,0 +1,27 @@
+{
+  "name": "garden-clash",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "assets": "python tools/unpack_pak.py \"../联机版260430/main.pak\" assets_raw && python tools/parse_reanim.py assets_raw/compiled/reanim build/anim && python tools/pack_assets.py && python tools/build_selector_ui.py",
+    "dev": "vite",
+    "dev:server": "tsx watch server/index.ts",
+    "build": "tsc --noEmit && vite build",
+    "check": "node --experimental-strip-types tools/sim-selfcheck.ts && npx tsx tools/nailong-bounds-check.ts && npx tsx tools/newunits-selfcheck.ts && node --experimental-strip-types tools/draft-selfcheck.ts && npx tsx tools/almanac-layout-check.ts && npx tsx tools/draft-layout-check.ts",
+    "start": "node --experimental-strip-types server/index.ts",
+    "invite": "node --experimental-strip-types tools/create-invite.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "ws": "^8.18.0"
+  }
+}

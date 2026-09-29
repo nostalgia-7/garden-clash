@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#172218" />
+    <title>花园攻防战</title>
+    <link rel="stylesheet" href="/src/game.css" />
+  </head>
+  <body>
+    <!-- 声音/画面设置统一收进这个面板；菜单上的花瓶和战斗页的齿轮都开它。 -->
+    <dialog id="settings-dialog" class="settings-dialog">
+      <section class="settings-card">
+        <h2>设置</h2>
+        <label class="settings-row">
+          <span>音量</span>
+          <button id="audio-toggle" type="button" aria-label="静音" aria-pressed="false">🔊</button>
+          <input id="audio-volume" type="range" min="0" max="100" step="1" value="72" aria-label="音量" />
+        </label>
+        <div id="orientation-row" class="settings-row orientation-row" hidden>
+          <span>屏幕方向</span>
+          <div class="orientation-buttons">
+            <button id="orient-landscape" type="button">横屏</button>
+            <button id="orient-portrait" type="button">竖屏</button>
+            <button id="orient-auto" type="button">自动</button>
+          </div>
+        </div>
+        <p id="settings-hint" class="settings-hint"></p>
+        <button id="settings-close" class="settings-close" type="button">关闭</button>
+      </section>
+    </dialog>
+
+    <!--
+      主菜单按原版 SelectorScreen 的 800×600 坐标系搭。
+      石碑上的字是直接刻进图里的（原版素材就是这么做的），不再用 DOM 文字叠一层；
+      两块木牌保留原版刻字，第二块正好是「点我换存档」→ 接账号面板。
+      外层只做 letterbox 缩放，内部绝不拉伸。
+    -->
+    <section id="main-menu" class="main-menu" aria-label="游戏主菜单">
+      <div class="selector-viewport">
+        <div class="selector-board" id="selector-board">
+          <div class="selector-art" aria-hidden="true">
+            <img class="sel-sky" src="/assets/selector/BG_Sky.jpg" alt="" draggable="false" />
+            <img class="sel-bg-center" src="/assets/selector/BG_Center.png" alt="" draggable="false" />
+            <img class="sel-bg-left" src="/assets/selector/BG_Left.png" alt="" draggable="false" />
+            <img class="sel-bg-right" src="/assets/selector/BG_Right.png" alt="" draggable="false" />
+            <img class="sel-shadow-adv" src="/assets/selector/SelectorScreen_Shadow_Adventure.png" alt="" draggable="false" />
+            <img class="sel-shadow-surv" src="/assets/selector/SelectorScreen_Shadow_Survival.png" alt="" draggable="false" />
+            <img class="sel-leaves" src="/assets/selector/SelectorScreen_Leaves.png" alt="" draggable="false" />
+          </div>
+
+          <!-- 左侧木牌：原版刻字保留，只有第二块空木板上叠一行 DOM 文字放账号名。 -->
+          <img class="wood-sign1" src="/assets/selector/SelectorScreen_WoodSign1.png" alt="欢迎回来，我的朋友！" draggable="false" />
+          <output id="menu-player" class="sign-name" aria-label="当前账号"></output>
+          <button id="menu-account" class="wood-sign2" type="button" title="账号 / 存档">
+            <img class="w2-img" src="/assets/selector/SelectorScreen_WoodSign2.png" alt="如果这不是你的存档，请点我" draggable="false" />
+            <img class="w2-img-press" src="/assets/selector/SelectorScreen_WoodSign2_press.png" alt="" draggable="false" />
+          </button>
+
+          <!-- 右侧石碑堆：文字已刻进素材，位置沿用原版冒险/生存/解谜三个碑位 -->
+          <button id="menu-online" class="mode-sign mode-online" type="button" title="对战模式">
+            <img class="mode-img" src="/assets/selector/Sign_Online.png" alt="对战模式" draggable="false" />
+            <img class="mode-img-hover" src="/assets/selector/Sign_Online_hl.png" alt="" draggable="false" />
+          </button>
+          <button id="menu-local" class="mode-sign mode-local" type="button" title="本地练习">
+            <img class="mode-img" src="/assets/selector/Sign_Local.png" alt="本地练习" draggable="false" />
+            <img class="mode-img-hover" src="/assets/selector/Sign_Local_hl.png" alt="" draggable="false" />
+          </button>
+
+          <!-- 右下角：一本图鉴（进去再分植物/僵尸）+ 两只花瓶。
+               花瓶是从背景里抠出来的那两只，原位盖回去，所以平时看不出接缝。
+               最左边那只是版本更新，最右边那只是设置。 -->
+          <button id="menu-almanac" class="almanac-book" type="button" title="图鉴" aria-label="图鉴">
+            <img class="book-img" src="/assets/selector/Almanac_Book.png" alt="" draggable="false" />
+            <img class="book-img-hover" src="/assets/selector/Almanac_Book_hl.png" alt="" draggable="false" />
+          </button>
+          <button id="menu-update" class="vase-update" type="button" title="版本更新" aria-label="版本更新">
+            <img class="vase-img" src="/assets/selector/Vase_Update.png" alt="" draggable="false" />
+            <img class="vase-img-hover" src="/assets/selector/Vase_Update_hl.png" alt="" draggable="false" />
+          </button>
+          <button id="menu-settings" class="vase-settings" type="button" title="设置" aria-label="设置">
+            <img class="vase-img" src="/assets/selector/Vase_Settings.png" alt="" draggable="false" />
+            <img class="vase-img-hover" src="/assets/selector/Vase_Settings_hl.png" alt="" draggable="false" />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 版本更新公告：底板是一块正面视角的墓碑，正文由 src/changelog.ts 提供。 -->
+    <dialog id="update-dialog" class="update-dialog" aria-label="版本更新公告">
+      <div class="update-board">
+        <button id="update-close" class="update-close" type="button" aria-label="关闭">×</button>
+        <h2 class="update-title">版本更新</h2>
+        <div class="update-text">
+          <p class="update-stamp"><span id="update-version"></span><time id="update-date"></time></p>
+          <ul id="update-items" class="update-items"></ul>
+        </div>
+      </div>
+    </dialog>
+
+    <section id="almanac" class="almanac-view" hidden aria-label="角色图鉴">
+      <div class="almanac-stage">
+        <canvas id="almanac-canvas" width="800" height="600" aria-label="图鉴书页"></canvas>
+        <div class="almanac-controls">
+          <button id="almanac-plants" type="button">植物</button>
+          <button id="almanac-zombies" type="button">僵尸</button>
+          <button id="almanac-back" type="button">返回主菜单</button>
+        </div>
+      </div>
+    </section>
+
+    <main id="battle-view" class="shell" hidden>
+      <header class="hero">
+        <div>
+          <p class="eyebrow">GARDEN CLASH · 本地对战原型</p>
+          <h1>花园攻防战</h1>
+        </div>
+        <div class="round-status" aria-live="polite">
+          <span id="phase">准备开战</span>
+          <strong id="timer">10:00</strong>
+          <button id="account-button" class="account-button" type="button" hidden><img id="account-avatar" alt="" /><span id="account-name"></span></button>
+          <button id="online-button" class="online-button" type="button">联机</button>
+          <button id="back-to-menu" class="online-button" type="button">主菜单</button>
+          <button id="battle-settings" class="online-button" type="button" title="设置">⚙ 设置</button>
+          <button id="restart" type="button">重新开始</button>
+        </div>
+      </header>
+
+      <section class="side-panel plants-panel" aria-label="植物方卡牌">
+        <div class="side-title">
+          <span class="side-badge plant-badge">植</span>
+          <div><b>植物守卫</b><small>选卡后点击草坪格子</small></div>
+          <button id="shovel" class="shovel-button" type="button" title="铲除已经种下的植物">🪏 铲子</button>
+          <output id="sun" class="resource sun">☀ 250</output>
+        </div>
+        <div id="plant-cards" class="cards"></div>
+      </section>
+
+      <section class="arena-wrap">
+        <canvas id="game" width="1400" height="600" aria-label="五路花园战场"></canvas>
+        <div id="loading" class="loading"><span class="spinner"></span>正在装配动画素材…</div>
+        <div id="toast" class="toast" aria-live="polite"></div>
+        <div id="result" class="result" hidden>
+          <p id="result-kicker"></p>
+          <h2 id="result-title"></h2>
+          <p id="result-detail"></p>
+          <button id="restart" type="button">再来一局</button>
+        </div>
+      </section>
+
+      <section class="side-panel zombies-panel" aria-label="僵尸方卡牌">
+        <div class="side-title">
+          <span class="side-badge zombie-badge">尸</span>
+          <div><b>僵尸军团</b><small>选卡后点击右侧对应路线</small></div>
+          <output id="brains" class="resource brains">🧠 250</output>
+        </div>
+        <div id="zombie-cards" class="cards"></div>
+      </section>
+
+      <footer>
+        <span id="mode-label">同屏双人：植物方操作上排，僵尸方操作下排</span>
+        <a href="/anim-test.html">动画素材自检</a>
+      </footer>
+    </main>
+
+    <section id="draft" class="draft-view" hidden aria-label="战前选卡与禁用">
+      <div class="draft-stage">
+        <canvas id="draft-canvas" width="800" height="600" aria-label="选卡与禁用"></canvas>
+      </div>
+    </section>
+
+    <dialog id="lobby" class="lobby">
+      <form method="dialog" class="lobby-card">
+        <div class="lobby-heading">
+          <div><p class="eyebrow">ONLINE ROOM</p><h2>联机对战</h2></div>
+          <button class="close-button" value="cancel" aria-label="关闭">×</button>
+        </div>
+        <p class="lobby-intro">输入相同房间码加入。植物方和僵尸方各一人，另有一个只读观战席；双方玩家到齐后自动开局。</p>
+        <label>房间码<input id="room-code" maxlength="8" autocomplete="off" spellcheck="false" /></label>
+        <fieldset>
+          <legend>我要玩</legend>
+          <label><input type="radio" name="side" value="plants" checked /><span>🌻 植物方</span></label>
+          <label><input type="radio" name="side" value="zombies" /><span>🧟 僵尸方</span></label>
+          <label><input type="radio" name="side" value="spectator" /><span>👁 观战</span></label>
+        </fieldset>
+        <p id="lobby-status" class="lobby-status">尚未连接</p>
+        <div class="lobby-actions">
+          <button id="create-room" value="noop" type="button">创建新房间</button>
+          <button id="join-room" value="noop" type="button" class="primary">连接房间</button>
+        </div>
+        <button id="share-room" value="noop" type="button" class="text-button share-room-button" hidden>分享房间邀请</button>
+        <section id="share-fallback" class="share-fallback" hidden aria-label="房间邀请分享">
+          <strong>邀请朋友加入</strong>
+          <p>手机可长按下面的链接复制，或让朋友扫描二维码。</p>
+          <input id="share-link" class="share-link" type="text" readonly aria-label="房间邀请链接" />
+          <div class="share-actions">
+            <button id="select-share-link" value="noop" type="button">选中链接</button>
+            <a id="open-share-link" href="#" target="_blank" rel="noopener">打开链接</a>
+          </div>
+          <canvas id="share-qr" width="180" height="180" aria-label="房间邀请二维码"></canvas>
+        </section>
+        <button id="local-mode" value="cancel" class="text-button">返回同屏试玩</button>
+      </form>
+    </dialog>
+    <dialog id="auth-dialog" class="auth-dialog">
+      <section class="auth-card">
+        <p class="eyebrow">PLAYER ACCOUNT</p><h2>进入花园攻防战</h2>
+        <div class="auth-tabs"><button id="show-login" class="active" type="button">登录</button><button id="show-register" type="button">邀请码注册</button></div>
+        <form id="login-form" class="auth-form"><label>账号<input id="login-account" autocomplete="username" maxlength="20" required /></label><label>密码<input id="login-password" type="password" autocomplete="current-password" minlength="8" maxlength="64" required /></label><button class="primary" type="submit">登录并进入大厅</button></form>
+        <form id="register-form" class="auth-form" hidden><label>邀请码<input id="register-invite" maxlength="12" autocomplete="off" required /></label><label>账号<input id="register-account" maxlength="20" autocomplete="username" pattern="[A-Za-z0-9_]{4,20}" required /></label><label>密码<input id="register-password" type="password" autocomplete="new-password" minlength="8" maxlength="64" required /></label><label class="avatar-upload">上传头像<input id="avatar-file" type="file" accept="image/png,image/jpeg,image/webp" required /></label><div id="avatar-editor" class="avatar-editor" hidden><canvas id="avatar-canvas" width="128" height="128"></canvas><label>缩放<input id="avatar-zoom" type="range" min="1" max="3" value="1" step="0.01" /></label><small>头像从图片中央裁剪为128×128</small></div><button class="primary" type="submit">注册并登录</button></form>
+        <p id="auth-status" class="auth-status">请使用你的账号登录。</p>
+      </section>
+    </dialog>
+    <dialog id="account-dialog" class="auth-dialog"><section class="auth-card account-card"><img id="profile-avatar" class="profile-avatar" alt="玩家头像" /><h2 id="profile-account"></h2><button id="logout-button" class="danger-button" type="button">退出登录</button><button id="close-account" class="text-button" type="button">关闭</button></section></dialog>
+  
+    <script type="module" src="/src/game.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,717 @@
+{
+ "_comment": "每个单位怎么用 reanim 素材。三件事：parts 点亮哪些外观部件组、hidden 强制隐藏哪些轨道（原版把泳圈/铁门/旗子全塞进同一份 Zombie.reanim 且默认可见，要逐个关掉）、states 把游戏状态映射到时间轴上的动作区间。states 的值可以给 sections（区间名，多个表示叠加播放）或 range（手写帧区间，用于自动切分不出来的情况），parts 是该状态额外点亮的部件组。前端与 tools/render_check.py 共用本文件，不要另写一份。",
+ "sunflower": {
+  "anim": "sunflower",
+  "parts": [],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "idle"
+    ]
+   }
+  }
+ },
+ "peashooter": {
+  "anim": "peashooter",
+  "parts": [
+   "face"
+  ],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "full_idle"
+    ]
+   },
+   "attack": {
+    "sections": [
+     "idle",
+     "shooting"
+    ]
+   }
+  }
+ },
+ "snowpea": {
+  "anim": "snowpea",
+  "parts": [
+   "face"
+  ],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "full_idle"
+    ]
+   },
+   "attack": {
+    "sections": [
+     "idle",
+     "shooting"
+    ]
+   }
+  }
+ },
+ "wallnut": {
+  "anim": "wallnut",
+  "parts": [
+   "face"
+  ],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "idle"
+    ]
+   }
+  }
+ },
+ "potatomine": {
+  "anim": "potatomine",
+  "parts": [
+   "face",
+   "eye"
+  ],
+  "hidden": [],
+  "states": {
+   "buried": {
+    "range": [
+     0,
+     9
+    ]
+   },
+   "rise": {
+    "range": [
+     10,
+     19
+    ],
+    "loop": false
+   },
+   "idle": {
+    "range": [
+     20,
+     30
+    ],
+    "parts": [
+     "armed"
+    ]
+   }
+  }
+ },
+ "cherrybomb": {
+  "anim": "cherrybomb",
+  "parts": [],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "idle"
+    ]
+   },
+   "explode": {
+    "sections": [
+     "explode"
+    ]
+   }
+  }
+ },
+ "threepeater": {
+  "anim": "threepeater",
+  "parts": [
+   "face1",
+   "face2",
+   "face3"
+  ],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "idle",
+     "head_idle1",
+     "head_idle2",
+     "head_idle3"
+    ]
+   },
+   "attack": {
+    "sections": [
+     "idle",
+     "shooting1",
+     "shooting2",
+     "shooting3"
+    ]
+   }
+  }
+ },
+ "tallnut": {
+  "anim": "tallnut",
+  "parts": [
+   "idle"
+  ],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "idle"
+    ]
+   }
+  }
+ },
+ "jalapeno": {
+  "anim": "jalapeno",
+  "parts": [],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "idle"
+    ]
+   },
+   "explode": {
+    "sections": [
+     "explode"
+    ]
+   }
+  }
+ },
+ "squash": {
+  "anim": "squash",
+  "parts": [
+   "face",
+   "eye"
+  ],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "idle"
+    ]
+   },
+   "jump": {
+    "sections": [
+     "jumpup"
+    ],
+    "loop": false
+   },
+   "smash": {
+    "sections": [
+     "jumpdown"
+    ],
+    "loop": false
+   }
+  }
+ },
+ "zombie": {
+  "anim": "zombie",
+  "parts": [
+   "head1",
+   "head2",
+   "innerarm1",
+   "innerarm2",
+   "innerarm3"
+  ],
+  "hidden": [
+   "Zombie_duckytube",
+   "Zombie_whitewater",
+   "Zombie_whitewater2",
+   "Zombie_flaghand",
+   "Zombie_innerarm_screendoor",
+   "Zombie_innerarm_screendoor_hand",
+   "Zombie_outerarm_screendoor",
+   "Zombie_mustache"
+  ],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "conehead": {
+  "anim": "zombie",
+  "parts": [
+   "head1",
+   "head2",
+   "innerarm1",
+   "innerarm2",
+   "innerarm3",
+   "cone"
+  ],
+  "hidden": [
+   "Zombie_duckytube",
+   "Zombie_whitewater",
+   "Zombie_whitewater2",
+   "Zombie_flaghand",
+   "Zombie_innerarm_screendoor",
+   "Zombie_innerarm_screendoor_hand",
+   "Zombie_outerarm_screendoor",
+   "Zombie_mustache"
+  ],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "buckethead": {
+  "anim": "zombie",
+  "parts": [
+   "head1",
+   "head2",
+   "innerarm1",
+   "innerarm2",
+   "innerarm3",
+   "bucket"
+  ],
+  "hidden": [
+   "Zombie_duckytube",
+   "Zombie_whitewater",
+   "Zombie_whitewater2",
+   "Zombie_flaghand",
+   "Zombie_innerarm_screendoor",
+   "Zombie_innerarm_screendoor_hand",
+   "Zombie_outerarm_screendoor",
+   "Zombie_mustache"
+  ],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "screendoor": {
+  "anim": "zombie",
+  "parts": [
+   "head1",
+   "head2",
+   "screendoor"
+  ],
+  "hidden": [
+   "Zombie_duckytube",
+   "Zombie_whitewater",
+   "Zombie_whitewater2",
+   "Zombie_flaghand",
+   "Zombie_mustache"
+  ],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "newspaper": {
+  "anim": "newspaper",
+  "parts": [
+   "hair",
+   "hairpiece",
+   "head1",
+   "head_glasses",
+   "head_jaw"
+  ],
+  "hidden": [],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "rage": {
+    "sections": [
+     "walk_nopaper"
+    ]
+   },
+   "rageEat": {
+    "sections": [
+     "eat_nopaper"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "dancer": {
+  "anim": "dancer",
+  "parts": [
+   "head1",
+   "head2",
+   "hair",
+   "earing"
+  ],
+  "hidden": [],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "summon": {
+    "sections": [
+     "armraise"
+    ],
+    "loop": false
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "backupdancer": {
+  "anim": "dancer",
+  "parts": [
+   "head2",
+   "hair"
+  ],
+  "hidden": [],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "polevaulter": {
+  "anim": "polevaulter",
+  "parts": [
+   "head1",
+   "head2",
+   "hair"
+  ],
+  "hidden": [],
+  "states": {
+   "move": {
+    "sections": [
+     "run"
+    ]
+   },
+   "jump": {
+    "sections": [
+     "jump"
+    ]
+   },
+   "moveAfterJump": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "football": {
+  "anim": "football",
+  "parts": [
+   "head1",
+   "head2",
+   "hair"
+  ],
+  "hidden": [],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "gargantuar": {
+  "anim": "gargantuar",
+  "parts": [
+   "head1"
+  ],
+  "hidden": [],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "smash": {
+    "sections": [
+     "smash"
+    ]
+   },
+   "throw": {
+    "sections": [
+     "throw"
+    ],
+    "loop": false
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   }
+  }
+ },
+ "imp": {
+  "anim": "imp",
+  "parts": [
+   "head1",
+   "head2"
+  ],
+  "hidden": [],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "thrown": {
+    "sections": [
+     "thrown"
+    ],
+    "loop": false
+   },
+   "land": {
+    "sections": [
+     "land"
+    ],
+    "loop": false
+   },
+   "death": {
+    "sections": [
+     "death"
+    ],
+    "loop": false
+   }
+  }
+ },
+ "lawnmower": {
+  "anim": "lawnmower",
+  "parts": [],
+  "hidden": [],
+  "states": {
+   "idle": {
+    "sections": [
+     "normal"
+    ]
+   }
+  }
+ },
+ "shadowstrike": {
+  "anim": "zombie",
+  "parts": [
+   "head1",
+   "head2",
+   "innerarm1",
+   "innerarm2",
+   "innerarm3"
+  ],
+  "hidden": [
+   "Zombie_duckytube",
+   "Zombie_whitewater",
+   "Zombie_whitewater2",
+   "Zombie_flaghand",
+   "Zombie_innerarm_screendoor",
+   "Zombie_innerarm_screendoor_hand",
+   "Zombie_outerarm_screendoor",
+   "Zombie_mustache"
+  ],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   },
+   "cloak": {
+    "sections": [
+     "walk"
+    ]
+   }
+  }
+ },
+ "zhongkui": {
+  "anim": "zombie",
+  "parts": [
+   "head1",
+   "head2",
+   "innerarm1",
+   "innerarm2",
+   "innerarm3"
+  ],
+  "hidden": [
+   "Zombie_duckytube",
+   "Zombie_whitewater",
+   "Zombie_whitewater2",
+   "Zombie_flaghand",
+   "Zombie_innerarm_screendoor",
+   "Zombie_innerarm_screendoor_hand",
+   "Zombie_outerarm_screendoor",
+   "Zombie_mustache"
+  ],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   },
+   "hook": {
+    "sections": [
+     "walk"
+    ]
+   }
+  }
+ },
+ "mimicsunflower": {
+  "anim": "zombie",
+  "parts": [
+   "head1",
+   "head2",
+   "innerarm1",
+   "innerarm2",
+   "innerarm3"
+  ],
+  "hidden": [
+   "Zombie_duckytube",
+   "Zombie_whitewater",
+   "Zombie_whitewater2",
+   "Zombie_flaghand",
+   "Zombie_innerarm_screendoor",
+   "Zombie_innerarm_screendoor_hand",
+   "Zombie_outerarm_screendoor",
+   "Zombie_mustache"
+  ],
+  "states": {
+   "move": {
+    "sections": [
+     "walk"
+    ]
+   },
+   "eat": {
+    "sections": [
+     "eat"
+    ]
+   },
+   "death": {
+    "sections": [
+     "death"
+    ]
+   },
+   "disguise": {
+    "sections": [
+     "idle"
+    ]
+   },
+   "burrow": {
+    "sections": [
+     "idle"
+    ]
+   }
+  }
+ }
+}
